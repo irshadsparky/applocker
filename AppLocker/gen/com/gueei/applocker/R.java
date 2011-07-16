@@ -11,13 +11,14 @@ public final class R {
     public static final class anim {
         public static final int cycle_7=0x7f040000;
         public static final int fade=0x7f040001;
-        public static final int shake=0x7f040002;
-        public static final int slide_left=0x7f040003;
-        public static final int slide_right=0x7f040004;
-        public static final int slide_top_to_bottom=0x7f040005;
-        public static final int wave_scale=0x7f040006;
-        public static final int zoom_enter=0x7f040007;
-        public static final int zoom_exit=0x7f040008;
+        public static final int nod=0x7f040002;
+        public static final int shake=0x7f040003;
+        public static final int slide_left=0x7f040004;
+        public static final int slide_right=0x7f040005;
+        public static final int slide_top_to_bottom=0x7f040006;
+        public static final int wave_scale=0x7f040007;
+        public static final int zoom_enter=0x7f040008;
+        public static final int zoom_exit=0x7f040009;
     }
     public static final class array {
         public static final int relock_timeout_entries=0x7f080000;
@@ -28,10 +29,15 @@ public final class R {
     public static final class drawable {
         public static final int applicationlist_item_selected=0x7f020000;
         public static final int icon=0x7f020001;
-        public static final int lockscreen_button=0x7f020002;
-        public static final int lockscreen_button_normal=0x7f020003;
-        public static final int lockscreen_button_pressed=0x7f020004;
-        public static final int lockscreen_checkbutton=0x7f020005;
+        public static final int important=0x7f020002;
+        public static final int launcher_icon=0x7f020003;
+        public static final int lockicons=0x7f020004;
+        public static final int lockscreen_button=0x7f020005;
+        public static final int lockscreen_button_normal=0x7f020006;
+        public static final int lockscreen_button_pressed=0x7f020007;
+        public static final int lockscreen_checkbutton=0x7f020008;
+        public static final int statusbar_icon=0x7f020009;
+        public static final int unlock=0x7f02000a;
     }
     public static final class id {
         public static final int tag_attributes=0x7f060001;

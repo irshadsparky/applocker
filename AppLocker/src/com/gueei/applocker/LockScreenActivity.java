@@ -3,6 +3,7 @@ package com.gueei.applocker;
 import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.Observable;
+import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.StringObservable;
 import android.app.Activity;
 import android.app.WallpaperManager;
@@ -25,16 +26,15 @@ public class LockScreenActivity extends Activity {
 	}
 	
 	public final Observable<Drawable> Wallpaper = new Observable<Drawable>(Drawable.class);
-	public final Command Number0 = new NumberCommand(0);
-	public final Command Number1 = new NumberCommand(1);
-	public final Command Number2 = new NumberCommand(2);
-	public final Command Number3 = new NumberCommand(3);
-	public final Command Number4 = new NumberCommand(4);
-	public final Command Number5 = new NumberCommand(5);
-	public final Command Number6 = new NumberCommand(6);
-	public final Command Number7 = new NumberCommand(7);
-	public final Command Number8 = new NumberCommand(8);
-	public final Command Number9 = new NumberCommand(9);
+	public final Command Number = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			if ((args.length<1)||!(args[0] instanceof Integer)) return;
+			Integer number = (Integer)args[0];
+			Password.set(Password.get() + number);
+		}
+	};
+	
 	public final Command Clear = new Command(){
 		@Override
 		public void Invoke(View view, Object... args) {
@@ -45,12 +45,15 @@ public class LockScreenActivity extends Activity {
 		@Override
 		public void Invoke(View view, Object... args) {
 			if (verifyPassword()){
+				Passed.set(true);
 				test_passed();
 			}else{
+				Passed.set(false);
 				Password.set("");
 			}
 		}
 	};
+	public final BooleanObservable Passed = new BooleanObservable(false);
 
 	private void test_passed() {
 		this.sendBroadcast(
@@ -78,15 +81,4 @@ public class LockScreenActivity extends Activity {
     	startActivity(intent);
     	finish();
 	}
-
-    private class NumberCommand extends Command{
-    	private int mNumber;
-    	public NumberCommand(int number){
-    		mNumber = number;
-    	}
-		@Override
-		public void Invoke(View view, Object... args) {
-			Password.set(Password.get() + mNumber);
-		}
-    }
 }

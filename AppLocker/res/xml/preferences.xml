@@ -8,6 +8,12 @@
                 android:title="AppLocker service"
                 android:summaryOn="AppLocker running"
                 android:summaryOff="AppLocker disabled" />
+		<CheckBoxPreference
+    		android:key="start_service_after_boot"
+    		android:title="Auto Start Service"
+    		android:dependency="service_enabled"
+    		android:summaryOn="Auto enable AppLocker after reboot"
+    		android:summaryOff="Manually startup service after reboot"/>
     </PreferenceCategory>
     <PreferenceCategory
     	android:title="General">
@@ -15,8 +21,7 @@
     		android:key="password"
     		android:title="Edit Password"
     		android:summary="Edit the Unlock password"
-    		android:password="true"
-    		android:inputType="number"
+    		android:inputType="textPassword"
     	/>
     	<CheckBoxPreference
     		android:key="relock_policy"

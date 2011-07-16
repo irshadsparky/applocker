@@ -15,6 +15,14 @@
     	android:layout_gravity="center_horizontal"
     	binding:source="Icon"
    	/>
+    <ImageView
+    	android:layout_width="30dip"
+    	android:layout_height="30dip"
+    	android:scaleType="fitCenter"
+    	android:layout_gravity="right"
+    	android:src="@drawable/important"
+    	binding:visibility="Important"
+    />
    	<TextView
    		android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
