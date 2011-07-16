@@ -23,6 +23,12 @@
 		<Button
 			android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
+			android:text="Defaults"
+			binding:onClick="SelectAllImportant"
+		/>
+		<Button
+			android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
 			android:text="Block All"
 			binding:onClick="SelectAll"
 		/>

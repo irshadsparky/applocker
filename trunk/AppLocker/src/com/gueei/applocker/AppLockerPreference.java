@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class AppLockerPreference implements OnSharedPreferenceChangeListener {
+	public boolean isAutoStart() {
+		return mAutoStart;
+	}
+	
 	public boolean isServiceEnabled() {
 		return mServiceEnabled;
 	}
@@ -28,6 +31,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 
 	private static final String PREF_SERVICE_ENABLED = "service_enabled";
 	private static final String PREF_APPLICATION_LIST = "application_list";
+	private static final String PREF_AUTO_START = "start_service_after_boot";
 	private static final String PREF_PASSWORD = "password";
 	
 	/**
@@ -42,6 +46,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 	private void reloadPreferences() {
 		mServiceEnabled = mPref.getBoolean(PREF_SERVICE_ENABLED, false);
 		mApplicationList = mPref.getString(PREF_APPLICATION_LIST, "").split(";");
+		mAutoStart = mPref.getBoolean(PREF_AUTO_START, false);
 		mPassword = mPref.getString(PREF_PASSWORD, "1234");
 		if (mPref.getBoolean("relock_policy", true)){
 			try{
@@ -61,7 +66,7 @@ public class AppLockerPreference implements OnSharedPreferenceChangeListener {
 					mInstance;
 	}
 
-	private boolean mServiceEnabled;
+	private boolean mServiceEnabled, mAutoStart;
 	private String[] mApplicationList;
 	private String mPassword;
 	private int mRelockTimeout;

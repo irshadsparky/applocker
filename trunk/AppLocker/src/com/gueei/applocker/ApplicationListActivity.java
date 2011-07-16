@@ -8,6 +8,7 @@ import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.StringObservable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -37,6 +38,7 @@ public class ApplicationListActivity extends Activity {
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
+			Collections.sort(items);
 			Applications.addAll(items);
 			Binder.setAndBindContentView(ApplicationListActivity.this, 
 					R.layout.applicationlist, ApplicationListActivity.this);			
@@ -71,7 +73,7 @@ public class ApplicationListActivity extends Activity {
 	        			info.activityInfo.loadLabel(getPackageManager()).toString(), 
 	        			info.activityInfo.name,
 	        			info.activityInfo.packageName,
-	        			image, included));
+	        			image, included, checkImportance(info.activityInfo.packageName)));
 	        }
 	        
 	        boolean included = false;
@@ -92,13 +94,21 @@ public class ApplicationListActivity extends Activity {
 		        		info.name,
 		        		info.packageName,
 		        		info.loadIcon(getPackageManager()),
-		        		included
+		        		included, true
 		        ));
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	        return 0;
+		}
+
+		private boolean checkImportance(String packageName) {
+			if ("com.android.vending".equals(packageName)||
+				"com.android.settings".equals(packageName)){
+				return true;
+			}
+			return false;
 		}
 	}
 	
@@ -122,21 +132,36 @@ public class ApplicationListActivity extends Activity {
 		}
 	};
 	
+	public final Command SelectAllImportant = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			for(AppItem app: Applications){
+				if (app.Important.get())
+					app.Included.set(true);
+				else
+					app.Included.set(false);
+			}
+			saveToPreference();
+		}
+	};
+	
 	public final ArrayListObservable<AppItem> Applications = 
 			new ArrayListObservable<AppItem>(AppItem.class);
 	
-	public class AppItem{
+	public class AppItem implements Comparable<AppItem>{
 		public final StringObservable Label = new StringObservable();
 		public final StringObservable Name = new StringObservable();
 		public final StringObservable PackageName = new StringObservable();
 		public final Observable<Drawable> Icon = new Observable<Drawable>(Drawable.class);
 		public final BooleanObservable Included = new BooleanObservable(false);
-		public AppItem(String label, String name, String packageName, Drawable icon, boolean included){
+		public final BooleanObservable Important = new BooleanObservable(false);
+		public AppItem(String label, String name, String packageName, Drawable icon, boolean included, boolean important){
 			Label.set(label);
 			Name.set(name);
 			PackageName.set(packageName);
 			Icon.set(icon);
 			Included.set(included);
+			Important.set(important);
 		}
 		public final Command ToggleIncluded = new Command(){
 			@Override
@@ -145,6 +170,11 @@ public class ApplicationListActivity extends Activity {
 				saveToPreference();
 			}
 		};
+		public int compareTo(AppItem another) {
+			if (Important.get() && !another.Important.get()) return -1;
+			if (!Important.get() && another.Important.get()) return 1;
+			return Label.get().compareTo(another.Label.get());
+		}
 	}
 	
 	private void saveToPreference(){
