@@ -21,7 +21,7 @@
     		android:key="password"
     		android:title="Edit Password"
     		android:summary="Edit the Unlock password"
-    		android:inputType="textPassword"
+    		android:inputType="number"
     	/>
     	<CheckBoxPreference
     		android:key="relock_policy"

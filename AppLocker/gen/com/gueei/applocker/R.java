@@ -21,8 +21,8 @@ public final class R {
         public static final int zoom_exit=0x7f040009;
     }
     public static final class array {
-        public static final int relock_timeout_entries=0x7f080000;
-        public static final int relock_timeout_values=0x7f080001;
+        public static final int relock_timeout_entries=0x7f060000;
+        public static final int relock_timeout_values=0x7f060001;
     }
     public static final class attr {
     }
@@ -39,16 +39,6 @@ public final class R {
         public static final int statusbar_icon=0x7f020009;
         public static final int unlock=0x7f02000a;
     }
-    public static final class id {
-        public static final int tag_attributes=0x7f060001;
-        public static final int tag_bindingmap=0x7f060000;
-        public static final int tag_multicastListeners=0x7f060002;
-        public static final int tag_observableCollection_attachedObservable=0x7f060005;
-        public static final int tag_observableCollection_position=0x7f060004;
-        public static final int tag_observableCollection_processedViews=0x7f060006;
-        public static final int tag_observableCollection_viewTypeId=0x7f060007;
-        public static final int tag_processedViews=0x7f060003;
-    }
     public static final class layout {
         public static final int applicationlist=0x7f030000;
         public static final int applicationlist_item=0x7f030001;
@@ -58,14 +48,16 @@ public final class R {
         public static final int tab=0x7f030005;
     }
     public static final class string {
-        public static final int appLockerPreferenceActivityName=0x7f070003;
-        public static final int app_name=0x7f070002;
-        public static final int hello=0x7f070001;
-        public static final int service_running=0x7f070004;
-        public static final int validation_required_message=0x7f070000;
+        public static final int activity_name_pattern=0x7f070000;
+        public static final int appLockerPreferenceActivityName=0x7f070005;
+        public static final int app_name=0x7f070004;
+        public static final int hello=0x7f070003;
+        public static final int logcat_clear_command=0x7f070002;
+        public static final int logcat_command=0x7f070001;
+        public static final int service_running=0x7f070006;
     }
     public static final class style {
-        public static final int CodeFont=0x7f090000;
+        public static final int CodeFont=0x7f080000;
     }
     public static final class xml {
         public static final int preferences=0x7f050000;

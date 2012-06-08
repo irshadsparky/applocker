@@ -91,6 +91,7 @@ public class DetectorService extends Service {
 	
     @Override
     public void onCreate() {
+    	initConstant();
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         try {
             mStartForeground = getClass().getMethod("startForeground",
@@ -103,7 +104,7 @@ public class DetectorService extends Service {
         }
     }
     
-    @Override
+	@Override
     public void onDestroy() {
     	
     	mThread.interrupt();
@@ -159,9 +160,21 @@ public class DetectorService extends Service {
     
     private static Thread mThread;
     
-    private static final Pattern ActivityNamePattern = Pattern.compile(	".*Starting activity.*cmp=((\\w+(\\.\\w+)*\\.\\w+)/(\\.?\\w+(\\.\\w+)*))");
-    private static final String LogCatCommand = "logcat ActivityManager:I *:S";
-    private static final String ClearLogCatCommand = "logcat -c";
+    private static boolean constantInited = false;
+    private static Pattern ActivityNamePattern; 
+    private static String LogCatCommand;
+    private static String ClearLogCatCommand;
+    
+    private void initConstant() {
+    	if (constantInited) return;
+    	String pattern = getResources().getString(R.string.activity_name_pattern);
+    	Log.d("Detector", "pattern: " + pattern);
+    	ActivityNamePattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+    	LogCatCommand = getResources().getString(R.string.logcat_command);
+    	ClearLogCatCommand = getResources().getString(R.string.logcat_clear_command);
+    }
+
+
     
     private class MonitorLogThread extends Thread{
     	ActivityStartingListener mListener;
@@ -182,20 +195,21 @@ public class DetectorService extends Service {
 				// Check if it matches the pattern
 				while(((line=br.readLine()) != null) && !this.isInterrupted()){
 					
+					Log.d("Detector", line);
+					
 					// Ignore launchers
 					if (line.contains("cat=[" + Intent.CATEGORY_HOME + "]")) continue;
 					
 					Matcher m = ActivityNamePattern.matcher(line);
-					if (!m.lookingAt()) continue;
-					if (m.groupCount()<5){
+					if (!m.find()) continue;
+					if (m.groupCount()<2){
 						// Log.d("Detector", "Unknown problem while matching logcat output. Might be SDK version?");
 						continue;
 					}
 					
+					if (mListener!=null) mListener.onActivityStarting(m.group(1), m.group(2));
 					
-					if (mListener!=null) mListener.onActivityStarting(m.group(2), m.group(4));
-					
-					Log.i("Detector", "Found activity launching: " + m.group(2) + "  /   " + m.group(4));
+					Log.i("Detector", "Found activity launching: " + m.group(1) + "  /   " + m.group(2));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
