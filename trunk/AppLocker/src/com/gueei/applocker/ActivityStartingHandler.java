@@ -93,7 +93,7 @@ public class ActivityStartingHandler implements ActivityStartingListener{
 			for(int i=0; i<list.length; i++){
 				if (list[i].equals(packageName)){
 					blockActivity(packageName, activityName);
-					break;
+					return;
 				}
 			}
 			

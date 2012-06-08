@@ -69,7 +69,7 @@ public class LockScreenActivity extends Activity {
     	return Password.get().equals(AppLockerPreference.getInstance(this).getPassword());
     }
     
-    public final StringObservable Password = new StringObservable();
+    public final StringObservable Password = new StringObservable("");
 
     @Override
 	public void onBackPressed() {
