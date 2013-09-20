@@ -74,16 +74,27 @@ public class ActivityStartingHandler implements ActivityStartingListener{
 		return info.topActivity.getPackageName();
 	}
 	
-	public void onActivityStarting(String packageName, String activityName) {
+	
+	 public void onActivityStarting(String packageName, String activityName) {
+	 
+		//debug: //debug: log.i("Detector","onActivityStarting");
 		synchronized(this){
+			
+			//Putting the lastRunningPackage up makes applocker's preferences activties
+			//not getting locked all the time!
+			if (packageName.equals(lastRunningPackage)) return;
+			
+			
 			if (packageName.equals(mContext.getPackageName())){
 				// Of course cannot block lock screen
+				//debug: //debug: log.i("Detector",activityName);
+				//debug: //debug: log.i("Detector",lockScreenActivityName);
 				if (activityName.equals(lockScreenActivityName)) return;
 				// But we need to block preferences
 				blockActivity(packageName, activityName);
 			}
 			
-			if (packageName.equals(lastRunningPackage)) return;
+			
 			
 			String[] list = AppLockerPreference.getInstance(mContext).getApplicationList();
 			
@@ -102,7 +113,7 @@ public class ActivityStartingHandler implements ActivityStartingListener{
 	}
 
 	private void blockActivity(String packageName, String activityName) {
-		Log.i("Detector", "Blocking: " + packageName);
+		//debug: log.i("Detector", "Blocking: " + packageName);
 		// Block!
 		Intent lockIntent = new Intent(mContext, LockScreenActivity.class);
 		lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -112,4 +123,5 @@ public class ActivityStartingHandler implements ActivityStartingListener{
 		
 		mContext.startActivity(lockIntent);
 	}
+	
 }
